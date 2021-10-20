@@ -3,10 +3,19 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http, {
     cors: true
 });
-
-// app.get('/', function (req, res) {
-//     res.sendFile(__dirname + '/index.html');
-// });
+app.use((req, res, next) => {
+    //设置请求头
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Max-Age': 1728000,
+        'Access-Control-Allow-Origin': req.headers.origin || '*',
+        'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
+        'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
+        'Content-Type': 'application/json; charset=utf-8'
+    })
+    req.method === 'OPTIONS' ? res.status(204).end() : next()
+})
+require('./router')(app)
 
 
 var usocket = []; //全局变量
