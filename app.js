@@ -3,6 +3,11 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http, {
     cors: true
 });
+var bodyParser = require('body-parser')
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
 app.use((req, res, next) => {
     //设置请求头
     res.set({
