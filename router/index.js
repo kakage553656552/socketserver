@@ -27,7 +27,7 @@ module.exports = function (app) {
         });
         connection.connect();
         console.log(req.body);
-        connection.query('insert into sys_user (id,name,age) values(null,"isisi",10)', function (error, results, fields) {
+        connection.query(`insert into sys_user (id,name,age) values(null,"${req.body.name}",${req.body.age})`, function (error, results, fields) {
             if (error) throw error;
             console.log(results);
             res.send(results)
