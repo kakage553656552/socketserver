@@ -38,7 +38,7 @@ io.on('connection', function (socket) {
         // socket.emit("message", msg) //发送广播给指定用户
         usocket.forEach(item=>{
             if(item.id !== id) {
-                item.emit('message','收到: '+'id:'+id+' 发来的 '+msg)
+                item.emit('message','收到用户'+id+' 发来的: '+msg)
             }
         })
     })
