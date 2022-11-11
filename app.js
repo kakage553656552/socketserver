@@ -26,7 +26,7 @@ require('./router')(app)
 var usocket = []; //全局变量
 io.on('connection', function (socket) {
     usocket.push(socket)
-    console.log('usocket',usocket)
+    console.dir(socket)
     // console.log('a user connected');
     // console.dir(socket.id);
     // console.log(usocket.length);
