@@ -39,14 +39,15 @@ module.exports = function (app) {
         msg: 'success',
       };
 
+      const token = generateRandomString(36);
       if (results.length === 0) {
         result.code = 500;
         result.msg = 'no data';
       } else {
-        result.token = generateRandomString(36);
-        await query('UPDATE sys_user SET token = ? WHERE id = ?', [result.token, results[0].id]);
+        await query('UPDATE sys_user SET token = ? WHERE id = ?', [token, results[0].id]);
       }
-
+      results[0].token = token;
+      result.data = results[0];
       res.send(result);
     } catch (error) {
       console.error(error);
@@ -96,4 +97,19 @@ module.exports = function (app) {
       res.status(500).send('Server Error');
     }
   });
+  app.delete('/signOut', async (req, res) => {
+    const id = req.query.id;
+    try {
+      // 修改 SQL 查询以删除 token 字段
+      await query('UPDATE sys_user SET token = NULL WHERE id = ?', [id]);
+      const result = {
+        code: 0,
+        msg: 'success',
+      };
+      res.send(result);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server Error');
+    }
+});
 };
