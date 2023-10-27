@@ -57,6 +57,16 @@ module.exports = function (app) {
 
   app.post('/insert', async (req, res) => {
     try {
+      //查询name是否已经存在数据库
+      const results = await query('SELECT * FROM sys_user WHERE name = ?', [req.body.name]);
+      if (results.length > 0) {
+        const result = {
+          code: 500,
+          msg: 'name already exists',
+        };
+        res.send(result);
+        return;
+      }
       await query('INSERT INTO sys_user (name, password) VALUES (?, ?)', [req.body.name, req.body.password]);
       const result = {
         code: 0,
