@@ -12,6 +12,11 @@ const pool = mysql.createPool({
 const query = util.promisify(pool.query).bind(pool);
 
 module.exports = function (app) {
+  // Express 中间件，在所有路由前添加 '/api' 前缀
+  app.use('/api', (req, res, next) => {
+    req.url = '/api' + req.url;
+    next();
+  });
   app.get('/test', async (req, res) => {
     try {
       const results = await query('SELECT * from sys_user');
